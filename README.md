@@ -114,10 +114,10 @@ Remove the project and related configurations only after being marked, and ask p
    - **Build Command:** `npm run build`
    - **Output Directory:** `dist`
 3. Add **Environment Variable:**
-   - `VITE_API_URL` = `https://YOUR-RENDER-URL.onrender.com/api` (replace with your real Render backend URL, including `/api`).
+   - `VITE_API_URL` = `https://cwsms-system.onrender.com/api`
 4. Deploy. Vercel will give you a URL like `https://your-app.vercel.app`.
 
 ### After deployment
 
 1. In **Render** (backend), set `FRONTEND_URL` to your **Vercel** URL (e.g. `https://your-app.vercel.app`) so CORS and cookies work. Redeploy if needed.
-2. Use the Vercel URL to open the app; it will call the Render backend using `VITE_API_URL`.
+2. Use the Vercel URL to open the app; it will call the Render backend at [https://cwsms-system.onrender.com](https://cwsms-system.onrender.com).

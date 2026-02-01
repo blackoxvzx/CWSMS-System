@@ -1,0 +1,27 @@
+# Render Blueprint - deploy as Web Service
+# Docs: https://render.com/docs/blueprint-spec
+services:
+  - type: web
+    name: cwsms-backend
+    runtime: node
+    region: oregon
+    plan: free
+
+    buildCommand: npm install
+    startCommand: npm start
+
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DB_HOST
+        sync: false
+      - key: DB_USER
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: DB_NAME
+        sync: false
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: FRONTEND_URL
+        sync: false

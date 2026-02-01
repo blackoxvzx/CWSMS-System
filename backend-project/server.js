@@ -48,6 +48,8 @@ app.use('/api/reports', reportsRoutes);
 
 app.get('/api/health', (req, res) => res.json({ ok: true }));
 
+app.get("/", (_req, res) => { res.send("CWSMS Backend is running 🚀"); });
+
 app.listen(PORT, () => {
   console.log(`CWSMS Backend running on http://localhost:${PORT}`);
 });

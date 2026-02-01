@@ -121,3 +121,20 @@ Remove the project and related configurations only after being marked, and ask p
 
 1. In **Render** (backend), set `FRONTEND_URL` to your **Vercel** URL (e.g. `https://your-app.vercel.app`) so CORS and cookies work. Redeploy if needed.
 2. Use the Vercel URL to open the app; it will call the Render backend at [https://cwsms-system.onrender.com](https://cwsms-system.onrender.com).
+
+### Troubleshooting: 500 on login
+
+**500 on `/api/auth/login`** usually means the backend on Render **cannot reach the database**. Render does not provide MySQL.
+
+1. **Use a hosted MySQL** (e.g. [PlanetScale](https://planetscale.com), [Railway](https://railway.app), [Aiven](https://aiven.io), or your own server).
+2. In **Render** → your service → **Environment**, set:
+   - `DB_HOST` = your MySQL host
+   - `DB_USER` = your MySQL user
+   - `DB_PASSWORD` = your MySQL password
+   - `DB_NAME` = `CWSMS`
+3. Create the database and tables on that MySQL (run `backend-project/database/init.sql`).
+4. Redeploy the backend on Render.
+
+**Check DB from Render:** Open `https://cwsms-system.onrender.com/api/health/db`. If it returns `{ "ok": false, "db": "disconnected" }`, the database connection from Render is failing.
+
+**401 on login** = wrong username/password. Default user: `receptionist` / `receptionist123` (must exist in the `User` table).

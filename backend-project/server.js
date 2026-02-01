@@ -57,7 +57,17 @@ app.use('/api/service-packages', servicePackageRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/reports', reportsRoutes);
 
-app.get('/api/health', (req, res) => res.json({ ok: true }));
+app.get('/api/health', (_req, res) => res.json({ ok: true }));
+
+app.get('/api/health/db', async (_req, res) => {
+  try {
+    await db.query('SELECT 1');
+    res.json({ ok: true, db: 'connected' });
+  } catch (err) {
+    console.error('DB health check failed:', err.message);
+    res.status(503).json({ ok: false, db: 'disconnected', error: err.message });
+  }
+});
 
 app.get("/", (_req, res) => { res.send("CWSMS Backend is running 🚀"); });
 

@@ -18,7 +18,11 @@ router.post('/login', async (req, res) => {
     req.session.username = rows[0].username;
     res.json({ success: true, user: { username: rows[0].username } });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error('Login error:', err.message);
+    const isProduction = process.env.NODE_ENV === 'production';
+    res.status(500).json({
+      error: isProduction ? 'Login failed. Please try again.' : err.message
+    });
   }
 });
 

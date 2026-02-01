@@ -16,14 +16,25 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const isProduction = process.env.NODE_ENV === 'production';
 
-// CORS: allow frontend (Vercel URL in production, localhost in dev)
+// CORS: allow frontend (Vercel *.vercel.app + FRONTEND_URL list + localhost)
 const allowedOrigins = process.env.FRONTEND_URL
   ? process.env.FRONTEND_URL.split(',').map((o) => o.trim())
   : ['http://localhost:3000'];
+
+function isAllowedOrigin(origin) {
+  if (!origin) return true;
+  if (allowedOrigins.includes(origin)) return true;
+  try {
+    const host = new URL(origin).hostname;
+    if (host.endsWith('.vercel.app')) return true;
+  } catch (_) {}
+  return false;
+}
+
 app.use(cors({
   origin: (origin, cb) => {
-    if (!origin || allowedOrigins.includes(origin)) return cb(null, true);
-    cb(new Error('Not allowed by CORS'));
+    if (isAllowedOrigin(origin)) return cb(null, true);
+  cb(new Error('Not allowed by CORS'));
   },
   credentials: true
 }));

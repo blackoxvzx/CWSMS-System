@@ -82,3 +82,42 @@ Save your work in a folder named: **FirstName_LastName_National_Practical_Exam_2
 ## Removing Project (per assessment)
 
 Remove the project and related configurations only after being marked, and ask permission from the assessor before removing.
+
+---
+
+## Deployment (Render + Vercel)
+
+### Backend on Render
+
+1. **Push** the repo to GitHub (ensure `backend-project/` is in the repo).
+2. Go to [Render](https://render.com) → **New** → **Web Service**.
+3. Connect the repo and set:
+   - **Root Directory:** `backend-project`
+   - **Build Command:** `npm install`
+   - **Start Command:** `npm start`
+   - **Node version:** 18 or 20 (in **Environment** or add `engines` in `package.json`).
+4. Add **Environment Variables** in the Render dashboard:
+   - `NODE_ENV` = `production`
+   - `DB_HOST`, `DB_USER`, `DB_PASSWORD`, `DB_NAME` (use a hosted MySQL, e.g. PlanetScale, Railway, or your own).
+   - `SESSION_SECRET` = a long random string (or let Render generate).
+   - `FRONTEND_URL` = your Vercel frontend URL, e.g. `https://your-app.vercel.app` (no trailing slash).
+5. Deploy. Note the backend URL (e.g. `https://cwsms-backend.onrender.com`).
+
+**Optional:** You can use the **Blueprint** flow and point Render at `backend-project/render.yaml` instead of setting fields manually.
+
+### Frontend on Vercel
+
+1. Go to [Vercel](https://vercel.com) → **Add New** → **Project** and import the same GitHub repo.
+2. Set:
+   - **Root Directory:** `frontend-project`
+   - **Framework Preset:** Vite (auto-detected).
+   - **Build Command:** `npm run build`
+   - **Output Directory:** `dist`
+3. Add **Environment Variable:**
+   - `VITE_API_URL` = `https://YOUR-RENDER-URL.onrender.com/api` (replace with your real Render backend URL, including `/api`).
+4. Deploy. Vercel will give you a URL like `https://your-app.vercel.app`.
+
+### After deployment
+
+1. In **Render** (backend), set `FRONTEND_URL` to your **Vercel** URL (e.g. `https://your-app.vercel.app`) so CORS and cookies work. Redeploy if needed.
+2. Use the Vercel URL to open the app; it will call the Render backend using `VITE_API_URL`.

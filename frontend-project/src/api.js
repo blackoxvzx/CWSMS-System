@@ -1,7 +1,9 @@
 import axios from 'axios';
 
-// Local dev: use Vite proxy (/api). Production: use full backend URL (Render).
-const baseURL = import.meta.env.VITE_API_URL || '/api';
+// Local dev: use Vite proxy (/api). Production: use Render backend (env or fallback).
+const baseURL =
+  import.meta.env.VITE_API_URL ||
+  (import.meta.env.PROD ? 'https://cwsms-system.onrender.com/api' : '/api');
 
 const api = axios.create({
   baseURL,
